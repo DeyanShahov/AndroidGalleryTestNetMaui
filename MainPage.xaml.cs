@@ -27,6 +27,23 @@ namespace AndroidGalleryTestNetMaui
             }
         }
 
+        private string errorMessage;
+
+        public string ErrorMessage
+        {
+            get => errorMessage;
+            set
+            {
+                if (errorMessage != value)
+                {
+                    errorMessage = value;
+                    OnPropertyChanged(nameof(ErrorMessage));
+                    ErrorLabel.Text = value;
+                    ErrorLabel.IsVisible = !string.IsNullOrEmpty(value);
+                }
+            }
+        }
+
         public MainPage()
         {
             InitializeComponent();
@@ -63,12 +80,12 @@ namespace AndroidGalleryTestNetMaui
                 testPermision = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
                 if (Permissions.ShouldShowRationale<Permissions.StorageRead>())
                 {
-                    await DisplayAlert("Permission", "Need permission to access photos", "OK");
+                    errorMessage = "Error: Storage permission is required to access storage.";
                 }
                 testPermision = await Permissions.RequestAsync<Permissions.StorageRead>();
                 if (testPermision != PermissionStatus.Granted)
                 {
-                    await DisplayAlert("Permission required", "Storage permission is required to load images", "OK");
+                    ErrorMessage = "Error: Storage permission is required to load images.";
                     return;
                 }
                 
@@ -97,13 +114,13 @@ namespace AndroidGalleryTestNetMaui
                 
                     if (cursor == null)
                     {
-                        await DisplayAlert("Error", "Cursor is null. Query failed.", "OK");
+                        ErrorMessage = "Error: Cursor is null. Query failed.";
                         return;
                     }
                 
                     if (!cursor.MoveToFirst())
                     {
-                        await DisplayAlert("Info", "No images found in the specified directory.", "OK");
+                        ErrorMessage = "Info: No images found in the specified directory.";
                         return;
                     }
                 
@@ -137,7 +154,7 @@ namespace AndroidGalleryTestNetMaui
                     }
                     else
                     {
-                        await DisplayAlert("Error", "Directory not found", "OK");
+                        ErrorMessage = "Error: Directory not found.";
                         return;
                     }
                 }
@@ -146,7 +163,7 @@ namespace AndroidGalleryTestNetMaui
                 
                 if (!ImagesList.Any())
                 {
-                    await DisplayAlert("Info", "No images found in directory", "OK");
+                    ErrorMessage = "Info: No images found in directory.";
                     return;
                 }
                     
@@ -160,7 +177,7 @@ namespace AndroidGalleryTestNetMaui
             }
             catch (Exception ex)
             {
-                 await DisplayAlert("Error", $"An error occurred: {ex.Message}\nStack: {ex.StackTrace}", "OK");      
+                 ErrorMessage = $"Error: {ex.Message}";
 #endif
             }
             finally

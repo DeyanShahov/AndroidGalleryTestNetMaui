@@ -4,7 +4,20 @@
              x:Class="AndroidGalleryTestNetMaui.MainPage">
 
     <Grid>
-        <CollectionView ItemsSource="{Binding ImagesList}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label x:Name="ErrorLabel"
+               Text=""
+               IsVisible="False"
+               TextColor="Red"
+               HorizontalOptions="Center"
+               Margin="10"/>
+
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding ImagesList}"
                         HeightRequest="600"
                         VerticalOptions="FillAndExpand">
             <CollectionView.ItemsLayout>
@@ -26,10 +39,12 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <ActivityIndicator IsRunning="{Binding IsBusy}"
-                          IsVisible="{Binding IsBusy}"
-                          HorizontalOptions="Center"
-                          VerticalOptions="Center"/>
+        
+        <ActivityIndicator Grid.Row="1"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
     </Grid>
 
 </ContentPage>
