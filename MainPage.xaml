@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AndroidGalleryTestNetMaui.MainPage">
+
+    <Grid>
+        <CollectionView ItemsSource="{Binding ImagesList}"
+                        HeightRequest="600"
+                        VerticalOptions="FillAndExpand">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                Span="3"
+                                HorizontalItemSpacing="5"
+                                VerticalItemSpacing="5"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="0" 
+                           IsClippedToBounds="True" 
+                           CornerRadius="0">
+                        <Image Source="{Binding .}"
+                               Aspect="AspectFill"
+                               HeightRequest="120"
+                               WidthRequest="120"/>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                          IsVisible="{Binding IsBusy}"
+                          HorizontalOptions="Center"
+                          VerticalOptions="Center"/>
+    </Grid>
+
+</ContentPage>
