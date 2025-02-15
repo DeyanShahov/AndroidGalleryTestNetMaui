@@ -1,7 +1,4 @@
-﻿using Microsoft.Maui.Controls.PlatformConfiguration;
-using System;
-
-namespace AndroidGalleryTestNetMaui
+﻿namespace AndroidGalleryTestNetMaui
 {
     public partial class MainPage : ContentPage
     {
@@ -28,8 +25,8 @@ namespace AndroidGalleryTestNetMaui
             }
         }
 
-        private string errorMessage = string.Empty;
 
+        private string errorMessage = string.Empty;
         public string ErrorMessage
         {
             get => errorMessage;
@@ -63,11 +60,20 @@ namespace AndroidGalleryTestNetMaui
             );
         }
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
-            _ = imageLoader.LoadImagesAsync();
-            _ = singleImageLoader.LoadSingleImageAsync("open_jacket_mask.png");
+            // Изчакваме асинхронното зареждане на изображенията
+            await singleImageLoader.LoadSingleImageAsync("open_jacket_mask.png");
+            await imageLoader.LoadImagesAsync();
+        }
+
+        private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+        {
+            if (sender is Image tappedImage && tappedImage.BindingContext is string imageUri)
+            {
+                await Navigation.PushModalAsync(new ImageDetailPage(imageUri));
+            }
         }
     }
 }
