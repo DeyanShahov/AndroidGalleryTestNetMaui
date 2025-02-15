@@ -3,20 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AndroidGalleryTestNetMaui.MainPage">
 
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Label x:Name="ErrorLabel"
+               Grid.Row="1"
                Text=""
                IsVisible="False"
                TextColor="Red"
                HorizontalOptions="Center"
                Margin="10"/>
 
-        <CollectionView Grid.Row="1"
+        <CollectionView Grid.Row="2"
                         ItemsSource="{Binding ImagesList}"
                         HeightRequest="600"
                         VerticalOptions="FillAndExpand">
@@ -40,7 +43,16 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
         
-        <ActivityIndicator Grid.Row="1"
+        <Frame Grid.Row="3"
+               Padding="5"
+               HasShadow="True"
+               BorderColor="Black"
+               Margin="10">
+            <Image x:Name="SelectedBodyImage"
+                   Aspect="AspectFit"/>
+        </Frame>
+
+        <ActivityIndicator Grid.Row="0" Grid.RowSpan="3"
                            IsRunning="{Binding IsBusy}"
                            IsVisible="{Binding IsBusy}"
                            HorizontalOptions="Center"

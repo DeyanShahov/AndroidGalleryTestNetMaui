@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Controls.PlatformConfiguration;
+using System;
 
 namespace AndroidGalleryTestNetMaui
 {
@@ -27,7 +28,7 @@ namespace AndroidGalleryTestNetMaui
             }
         }
 
-        private string errorMessage;
+        private string errorMessage = string.Empty;
 
         public string ErrorMessage
         {
@@ -45,6 +46,7 @@ namespace AndroidGalleryTestNetMaui
         }
 
         private readonly ImageLoader imageLoader;
+        private readonly SingleImageLoader singleImageLoader;
 
         public MainPage()
         {
@@ -55,12 +57,17 @@ namespace AndroidGalleryTestNetMaui
                 setBusy: (busy) => IsBusy = busy,
                 setImagesList: (images) => ImagesList = images
             );
+            singleImageLoader = new SingleImageLoader(
+                setErrorMessage: (msg) => ErrorMessage = msg,
+                setImage: (uri) => SelectedBodyImage.Source = Microsoft.Maui.Controls.ImageSource.FromUri(new Uri(uri))
+            );
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
             _ = imageLoader.LoadImagesAsync();
+            _ = singleImageLoader.LoadSingleImageAsync("open_jacket_mask.png");
         }
     }
 }
